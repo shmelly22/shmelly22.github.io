@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 1 All Wired Up</title>
+</head>
+
+<body>
+
+<h1>Lab 1 All Wired Up</h1>
+<p>
+  Course: ATLS 3300<br>
+  Student: Sammy Muroff<br>
+  Assignment: Simple Circuits, LEDs, and Resistors
+</p>
+
+<h2>Goal</h2>
+<p>
+  The goal of this lab was to learn the basics of electrical circuits. To achieve this we built simple
+  LED circuits using a breadboard. Through this lab, I explored how voltage, current, and
+  resistance relate to one another, how polarity affects LEDs, and how switches can be
+  used to control the flow of electricity in circuits.
+</p>
+
+<h2>Materials Used</h2>
+<ul>
+  <li>ELEGOO Arduino Uno Starter Kit</li>
+  <li>830 tie-point breadboard</li>
+  <li>Power supply module (3.3V / 5V)</li>
+  <li>9V battery with barrel jack connector</li>
+  <li>LEDs</li>
+  <li>Resistors (100Ω and others)</li>
+  <li>Push button</li>
+  <li>Breadboard jumper wires</li>
+  <li>Multimeter</li>
+</ul>
+
+<h2>Part 1: Setting up Power</h2>
+
+<h3>Procedure</h3>
+<p>
+  Connect the power supply module to the breadboard, make sure that the positive
+  and negative pins aligned correctly with the breadboard power rails. Then connect the
+  9V battery to the barrel jack on the module and turn the module on to supply power
+  to the board. Make that you are using the 3.3V side of the power supply.
+</p>
+
+<h3>Voltage Measurement</h3>
+<p>
+  Using a multimeter set to measure DC voltage, test both power rails on the
+  breadboard. One side should measure 3.3V and the other side
+  approximately 5V. This confirms that the power supply module is functioning correctly.
+</p>
+
+<img src="9v_Voltage.jpg" width="500" height="400" alt="Measuring voltage with a multimeter">
+<p>
+  Measuring voltage with a multimeter.
+</p>
+
+<h2>Part 2: NOT Blowing up an LED</h2>
+
+<h3>Concept</h3>
+<p>
+  LEDs must be protected from excessive current at all times. Connecting an LED directly to a power
+  source can cause too much current to flow, which can damage or destroy the LED.
+  A resistor is used in series with the LED to limit current.
+</p>
+
+<h3>Mathematical Calculations</h3>
+<p>
+  Ohm's Law was used to calculate the required resistance:
+</p>
+<p>
+  R = V / I
+</p>
+
+<p>
+  For a 3.3V power source and a target current of 30 mA:
+</p>
+<p>
+  R = 3.3V / 0.03A = 110Ω
+</p>
+
+<p>
+  Since a 110Ω resistor was not available, a 100Ω resistor will do. This results in a
+  current of approximately 33 mA, which is within the safe operating range of the LED.
+</p>
+
+<h3>5V Circuit Calculation</h3>
+<p>
+  For a 5V power source:
+</p>
+<p>
+  R = 5V / 0.03A ≈ 167Ω
+</p>
+
+<p>
+  Since a 167Ω resistor was not available, a 220Ω resistor will do. This results in a
+  current of approximately 33 mA, which is within the safe operating range of the LED.
+</p>
+
+<img src="3.3v_Simple_Led.png" width="500" height="400" alt="LED circuit with 3.3V power">
+<p>
+  LED circuit with 3.3V power.
+</p>
+<img src="5v_Simple_Led.png" width="500" height="400" alt="LED circuit with 5V power">
+<p>
+  LED circuit with 5V power.
+</p>
+
+<h2>Part 3: Switching the LED</h2>
+
+<h3>Procedure</h3>
+<p>
+  Add a push button to the LED circuit so that the LED will only turn on when the
+  button was pressed. The push button acts as a momentary SPST switch, completing
+  the circuit only while it is being pressed.
+</p>
+
+<img src="Simple_Led_Button.png" width="500" height="400" alt="3.3V LED circuit with a button">
+<p>
+  3.3V LED circuit with a button.
+</p>
+
+<h2>Extra Volt</h2>
+<p>
+  To create a ircuits LED is on by default and turns off when the push button is pressed
+  a path of less resistance around the led needs to be created. This circuit demonstrates a
+  logical NOT operation, since pressing the button inverts the state of the LED.
+</p>
+
+<img src="Led_Extra_Credit.png" width="500" height="400" alt="Inverted logic schematic">
+<p>
+  LED off when button pressed.
+</p>
+
+
+<h2>Problems Faced and Conclusion</h2>
+<p>
+  One issue I encountered was wiring the LED backwards, which prevented it from
+  lighting. Fixing the polarity resolved the issue. Using the multimeter helped confirm
+  that the correct voltages were being supplied throughout the circuit.
+</p>
+<p>
+  This lab provided a strong introduction to basic electronics and circuit design. The
+  concepts learned here will be important for future labs involving more complex
+  components and systems.
+</p>
+
+<h2>Sources and Acknowledgements</h2>
+<ul>
+  <li>ATLS 3300 lecture slides and lab handout</li>
+</ul>
+
+</body>
+</html>
