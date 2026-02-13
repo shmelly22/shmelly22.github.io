@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab 3</title>
+</head>
+<body>
+  <h1>Lab 3 Soldering Basics</h1>
+  <p><strong>Name:</strong> Sammy Muroff<br>
+
+  <h2>Description</h2>
+  <p>
+    In this lab I practiced my basic soldering skills. Setting up a safe soldering station,
+    soldering wires to a protoboard, creating solder bridges, splicing wires, and building 
+    a simple LED and resistor circuit on the protoboard that blinks from an Arduino digital pin.
+  </p>
+
+  <h2>Materials</h2>
+  <ul>
+    <li>Soldering iron and stand</li>
+    <li>Solder</li>
+    <li>Brass sponge and damp sponge </li>
+    <li>Helping hands</li>
+    <li>Safety glasses</li>
+    <li>Flush cutters, needle-nose pliers, scissors becasue I don't have a wire stripper</li>
+    <li>Protoboard </li>
+    <li>Solid core wire and stranded wire</li>
+    <li>LED</li>
+    <li>220 Ω resistor</li>
+    <li>Arduino</li>
+  </ul>
+
+  <h2>Part 1 — Setup</h2>
+  <h3>Safety steps I followed</h3>
+  <ul>
+    <li>Wore safety glasses while soldering and trimming leads.</li>
+    <li>Kept the hot iron in the stand when not soldering.</li>
+    <li>Worked in a ventilated area with a fan pointed at me and window open aswell as kept my face away from fumes.</li>
+    <li>Did not touch the metal parts of the iron, only the insulated handle.</li>
+    <li>Kept the work area clear of clutter and flammables, routed cords to avoid snagging.</li>
+    <li>Cleaned the iron tip often and re-tinned the tip as needed.</li>
+    <li>Washed hands after soldering.</li>'
+    <li>Did not have food or drink near me or the soldering iron.</li>
+  </ul>
+
+  <figure>
+    <img src="P1.jpg" alt="Soldering station setup" width="600" height="500">
+    <figcaption>My soldering station setup iron, stand, brass sponge, tools, and safety glasses.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="CleanTip.jpg" alt="Clean, tinned soldering tip" width="600" height="500">
+    <figcaption>Cclean and tinned soldering iron tip before making joints.</figcaption>
+  </figure>
+
+  <h2>Part 2 — Soldering Wires to Protoboard</h2>
+  <h3>Procedure</h3>
+  <ol>
+    <li>Stripped a short length of insulation from each wire end.</li>
+    <li>Inserted the wire into hole on the protoboard.</li>
+    <li>Heated the pad and wire together, then fed solder until it became a smooth joint.</li>
+    <li>Removed solder first, then the iron, and let the joint cool without movement.</li>
+    <li>Trimmed excess wire lead where needed.</li>
+  </ol>
+
+  <p><strong>Observation:</strong> Solid core wire was much easier to place and keep positioned in the holes.
+    Stranded wire was more flexible and tended to move unless twisted well. Solid core is definatly my preferred wire type for soldering</p>
+
+  <figure>
+    <img src="Wires6Connections.jpg" alt="Six wire joints on protoboard" width="600" height="500">
+    <figcaption>Top view showing the 6 wire connections soldered.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="P2.jpg" alt="Underside solder joints for wire connections" width="600" height="500">
+    <figcaption>Underside view of solder joints for the wires.</figcaption>
+  </figure>
+
+  <h2>Part 3 — Solder Bridges</h2>
+  <h3>Procedure</h3>
+  <ol>
+    <li>Placed solder on adjacent pads and allowed it to flow together into a bridge.</li>
+    <li>Built each bridge gradually to avoid spilling into nearby pads.</li>
+    <li>Checked visually that the intended pads were connected and no unintended pads were shorted.</li>
+  </ol>
+
+  <figure>
+    <img src="P3.jpg" alt="Three solder bridges on underside of protoboard" width="600" height="500">
+    <figcaption>Solder bridges connecting 5 pads together.</figcaption>
+  </figure>
+
+  <h2>Part 4 — Splicing Wire</h2>
+  <h3>Procedure</h3>
+  <ol>
+    <li>Stripped wire end and twisted matching ends together.</li>
+    <li>Heated the twisted joint and flowed solder through the splice.</li>
+  </ol>
+
+  <figure>
+    <img src="P4.jpg" alt="Wire splices with heat shrink" width="500" height="500">
+    <figcaption>My spliced wire joint connecting two wires together.</figcaption>
+  </figure>
+
+  <h2>Part 5 — LED and Resistor Circuit on Protoboard</h2>
+  <h3>Goal</h3>
+  <p>
+    Build an LED circuit on the protoboard and blink it from an Arduino digital pin.
+    I used Arduino digital pin 10 as the output pin.
+  </p>
+
+  <h3>Schematic</h3>
+  <figure>
+    <img src="P5Schematic.png" alt="Schematic for Arduino pin 10 to resistor to LED to ground" width="600" height="500">
+    <figcaption>Schematic showing Arduino D10 to resistor to LED to GND.</figcaption>
+  </figure>
+
+  <h3>Resistor Choice</h3>
+  <p>
+    I used a resistor of approximately 220 Ω. Assuming a 5 V Arduino output and a blue LED forward voltage of about 3.0 V:
+  </p>
+  <p>
+    I &asymp; (5.0 V &minus; 3.0 V) / 220 &Omega; &asymp; 0.0091 A &asymp; <strong>9 mA</strong>
+  </p>
+
+  <figure>
+    <img src="P5FinishedO.jpg" alt="Top side of finished LED circuit on proto-shield" width="600" height="500">
+    <figcaption>Top side of the finished LED and resistor circuit on the proto board.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="P5FinishedU.jpg" alt="Underside of finished LED circuit on protoboard" width="600" height="500">
+    <figcaption>Underside soldering for the finished LED and resistor circuit showing connections.</figcaption>
+  </figure>
+
+  <h3>Video</h3>
+  <p>The LED blinks on and off every 500 ms using digital pin 10.</p>
+  <video src="P5Blinking.MOV" controls width="600" height="500">
+  </video>
+  <p>Video showing the LED blinking from Arduino pin 10.</p>
+
+  <h3>Code</h3>
+  <pre><code>
+  void setup() {
+    pinMode(10, OUTPUT);
+  }
+
+  void loop() {
+    digitalWrite(10, HIGH);
+    delay(500);
+    digitalWrite(10, LOW);
+    delay(500);
+  }</code></pre>
+
+  <h2>Problems Faced</h2>
+  <ul>
+    <li>Keeping solder amounts small enough to avoid accidental bridging to nearby pads.</li>
+    <li>Getting the pad and the wire heated evenly so solder flowed smoothly and not pill up.</li>
+    <li>Holding wires steady while the joint cooled.</li>
+  </ul>
+
+  <h2>Conclusion</h2>
+  <p>
+    This lab helped me get comfortable with basic soldering technique. Clean and tinned tip,
+    correct heating order, and using minimal solder for clean joints.
+    I also practiced making bridges intentionally and spliceing wires.
+    I successfully built and ran a blinking LED circuit on the protoboard controlled by an Arduino.
+  </p>
+</body>
+</html>
