@@ -1,4 +1,4 @@
-<!doctype html>  
+<!doctype html>   
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -59,20 +59,6 @@
     <li>Potentiometer</li>
     <li>Joystick</li>
   </ul>
-
-  <h3>Photos</h3>
-  <figure>
-    <img src="materials.jpg" alt="Materials used" width="400" height="400">
-    <figcaption>Figure 1: Materials used for Lab 4 (Arduino Uno, breadboard, jumper wires, LEDs, resistors, potentiometer, joystick).</figcaption>
-  </figure>
-  <p>materials.jpg</p>
-
-  <figure>
-    <img src="workspace.jpg" alt="Workspace" width="400" height="400">
-    <figcaption>Figure 2: Workspace setup during wiring and testing.</figcaption>
-  </figure>
-  <p>workspace.jpg</p>
-
   <hr>
 
   <h2>Calculations</h2>
@@ -310,14 +296,12 @@ void loop() {
 
   <h3>Demo</h3>
   <figure>
-    <video controls src="P4.MOV.mp4" width="400" height="400"></video>
+    <video controls src="P4.MOV" width="400" height="400"></video>
     <figcaption>Part 4 demo joystick direction turns on the matching LED in the plus layout, diagonals light two LEDs.</figcaption>
   </figure>
 
   <h3>Code</h3>
-  <pre><code>int LEDarray[] = {2, 3, 4, 5, 6}; 
-// index mapping:
-// 0 = top, 1 = right, 2 = center, 3 = left, 4 = bottom
+  <pre><code>int LEDarray[] = {2, 3, 4, 5, 6};
 
 #define pin_JoyX A0
 #define pin_JoyY A1
@@ -341,32 +325,76 @@ void loop() {
   }
 
   // read joystick
-  int xVal = analogRead(pin_JoyX);
-  int yVal = analogRead(pin_JoyY);
+  int joyXValue = analogRead(pin_JoyX);
+  int joyYValue = analogRead(pin_JoyY);
 
-  // helpers
-  bool xMid = (xVal &gt; midLow &amp;&amp; xVal &lt; midHigh);
-  bool yMid = (yVal &gt; midLow &amp;&amp; yVal &lt; midHigh);
+  // deadzone checks
+  bool xMid = (joyXValue &gt; midLow &amp;&amp; joyXValue &lt; midHigh);
+  bool yMid = (joyYValue &gt; midLow &amp;&amp; joyYValue &lt; midHigh);
 
-  bool up    = (yVal &gt; highThresh);
-  bool down  = (yVal &lt; lowThresh);
-  bool right = (xVal &gt; highThresh);
-  bool left  = (xVal &lt; lowThresh);
+  // directions
+  bool up    = (joyXValue &lt; lowThresh);
+  bool down  = (joyXValue &gt; highThresh);
+  bool left  = (joyYValue &lt; lowThresh);
+  bool right = (joyYValue &gt; highThresh);
 
-  // centered = only center LED
+  // center
   if (xMid &amp;&amp; yMid) {
     digitalWrite(LEDarray[2], HIGH);
   }
-  else {
-    // diagonals = two LEDs
-    if (up)    digitalWrite(LEDarray[0], HIGH);
-    if (right) digitalWrite(LEDarray[1], HIGH);
-    if (left)  digitalWrite(LEDarray[3], HIGH);
-    if (down)  digitalWrite(LEDarray[4], HIGH);
+
+  // diagonals
+  else if (up &amp;&amp; right) {
+    digitalWrite(LEDarray[0], HIGH);
+    digitalWrite(LEDarray[1], HIGH);
+  }
+  else if (up &amp;&amp; left) {
+    digitalWrite(LEDarray[0], HIGH);
+    digitalWrite(LEDarray[3], HIGH);
+  }
+  else if (down &amp;&amp; right) {
+    digitalWrite(LEDarray[4], HIGH);
+    digitalWrite(LEDarray[1], HIGH);
+  }
+  else if (down &amp;&amp; left) {
+    digitalWrite(LEDarray[4], HIGH);
+    digitalWrite(LEDarray[3], HIGH);
+  }
+
+  // single directions (other axis centered)
+  else if (up &amp;&amp; yMid) {
+    digitalWrite(LEDarray[0], HIGH);
+  }
+  else if (right &amp;&amp; xMid) {
+    digitalWrite(LEDarray[1], HIGH);
+  }
+  else if (down &amp;&amp; yMid) {
+    digitalWrite(LEDarray[4], HIGH);
+  }
+  else if (left &amp;&amp; xMid) {
+    digitalWrite(LEDarray[3], HIGH);
   }
 
   delay(10);
 }</code></pre>
+
+  <h3>Explanation</h3>
+  <p>
+    I figured out why my first version felt wrong. I assumed the joystick VRx and VRy matched the same physical directions
+    that my code was checking, but on my joystick module the axes were effectively rotated (up and down changed the X reading
+    and left and right changed the Y reading). That meant my direction checks were correct in logic but wrong for my actual
+    hardware orientation. Another issue was that diagonals require two directions to be true at the same time, so using a single
+    else-if chain can make it impossible to light two LEDs unless the code is written to explicitly handle diagonal cases first.
+    Once I mapped the joystick readings to the real directions and prioritized diagonals, the plus layout behaved consistently.
+  </p>
+
+  <h3>Debugging Notes</h3>
+  <ul>
+    <li>The joystick would sometimes flicker between directions near the center, so I used a deadzone range and midLow/midHigh checks.</li>
+    <li>My first thresholds were too close to the center, so diagonals were triggering randomly. I fixed it by printing raw X/Y values and increasing the high and low thresholds.</li>
+    <li>I had one LED not turning on because it was backwards in the breadboard. Flipping the LED polarity fixed it.</li>
+    <li>One direction LED was inconsistent because I accidentally used the wrong digital pin in the array compared to my wiring. I checked the pin numbers on the Arduino header and matched them to the LEDarray order.</li>
+  </ul>
 
   <hr>
 
@@ -510,6 +538,15 @@ void loop() {
   delay(3000);
 }</code></pre>
 
+  <h3>Debugging Notes</h3>
+  <ul>
+    <li>The game would sometimes never detect a hit because my joystick was slightly off-center. I fixed it by keeping the midLow/midHigh deadzone check so it only counts a direction when the other axis is centered.</li>
+    <li>At first the LEDs would stay on after a hit because I only turned off the target LED. I changed it to turn off all four direction LEDs after each round so the next round starts clean.</li>
+    <li>The timing felt incorrect until I moved startTime = millis() to right before the rounds begin and endTime = millis() right after the loop ends.</li>
+    <li>Sometimes it would feel like the next round started too fast, so I added a small delay after turning off the LEDs so the player can see the hit.</li>
+    <li>When I tested, the center LED blink helped a lot because it gave a clear countdown and confirmed the board was running before the timer started.</li>
+  </ul>
+
   <hr>
 
   <h2>Problems and Debugging Notes</h2>
@@ -517,21 +554,9 @@ void loop() {
     <li>Joystick readings were noisy near center, so I used a deadzone range.</li>
     <li>Some LEDs were inconsistent until I re-checked the ground connections and digital pins.</li>
     <li>Direction detection was fixed by printing raw X/Y values and adjusting thresholds.</li>
+    <li>For the plus layout, I checked LED polarity and confirmed each LED pin matched the LEDarray order.</li>
+    <li>For the game, I made sure the joystick direction checks required the other axis to be in the deadzone so wrong directions would not count.</li>
   </ul>
-
-  <figure>
-    <img src="debug_1.jpg" alt="Debug photo 1" width="400" height="400">
-    <figcaption>Figure 10: Debugging photo 1 — checking potentiometer wiring and verifying A0 reads stable values.</figcaption>
-  </figure>
-  <p>debug_1.jpg</p>
-
-  <figure>
-    <img src="debug_2.jpg" alt="Debug photo 2" width="400" height="400">
-    <figcaption>Figure 11: Debugging photo 2 — verifying LED polarity, resistor placement, and common ground.</figcaption>
-  </figure>
-  <p>debug_2.jpg</p>
-
-  <hr>
 
   <h2>Sources and References</h2>
   <ul>
