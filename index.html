@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lab 4 - Whack-A-MoLED</title>
+  <title>Lab 4 Whack-A-MoLED</title>
 </head>
 
 <body>
-  <h1>Lab 4 — Whack-A-MoLED</h1>
+  <h1>Lab 4 Whack-A-MoLED</h1>
 
   <p>
     Class: ATLS 3300<br>
@@ -23,33 +23,22 @@
     joystick direction is used to hit the correct LED and a time is given at the end.
   </p>
 
-  <h2>What it Does / How to Use It</h2>
+  <h2>What it Does and How to Use It</h2>
   <ul>
     <li>Part 1: Turn the potentiometer knob and watch the raw ADC value + voltage print in Serial Monitor.</li>
-    <li>Part 2: Turn the potentiometer knob to control how many LEDs turn on (like a bar graph).</li>
+    <li>Part 2: Turn the potentiometer knob to control how many lined up LEDs turn on.</li>
     <li>Part 3: Move the joystick and watch the X/Y values change in Serial Monitor. Press the joystick to change SW.</li>
-    <li>Part 4: Move the joystick up/down/left/right to light the matching LED in the plus layout.</li>
-    <li>Part 5: When the target LED lights up, move the joystick in the matching direction to “hit” it. A time is shown at the end.</li>
+    <li>Part 4: Move the joystick up, down, left, right, and diagonals to light the matching LEDs in a plus layout.</li>
+    <li>Part 5: When the target LED lights up, move the joystick in the matching direction to hit it. A time is shown at the end of the game.</li>
   </ul>
 
-  <h2>How it Works (For an Informed Reader)</h2>
+  <h2>How it Works</h2>
   <p>
-    The potentiometer and joystick axes are read through the Arduino’s ADC (0–1023). The potentiometer is a voltage divider:
-    the wiper outputs a voltage between 0V and 5V depending on knob position. The joystick VRx/VRy behave the same way but
-    are mechanically controlled by the stick position. The LED behaviors are driven with digital output pins. For the bar graph,
-    the ADC reading is mapped to an integer count of LEDs to illuminate. For joystick direction, thresholds and a deadzone
-    are used to convert analog values into discrete directions.
-  </p>
-
-  <h2>System Diagram</h2>
-  <figure>
-    <img src="system_diagram.png" alt="System diagram of inputs, Arduino, and outputs" width="400" height="400">
-    <figcaption>
-      Figure 0: System diagram — potentiometer + joystick (inputs) → Arduino reads analog/digital → LEDs (outputs) + Serial Monitor.
-    </figcaption>
-  </figure>
-  <p>
-    system_diagram.png
+    The potentiometer and joystick axes are read through the Arduino's ADC (0-1023). The potentiometer is a voltage divider,
+    the wiper outputs a voltage between 0V and 5V depending on its position. The joystick VRx and VRy behave the same way but
+    are mechanically controlled by the stick position. The LED behaviors are driven with digital output pins controlling voltage.
+    For the bar graph, the ADC reading is mapped to an integer count of LEDs to illuminate. For joystick direction, thresholds and 
+    a deadzone are used to convert analog values into discrete directions and in Part 4, diagonal directions light two LEDs at once.
   </p>
 
   <h2>Materials Used</h2>
@@ -65,22 +54,20 @@
   <h3>Photos</h3>
   <figure>
     <img src="materials.jpg" alt="Materials used" width="400" height="400">
-    <figcaption>Figure 1: Materials used for Lab 4 (Arduino Uno, breadboard, jumper wires, LEDs, resistors, potentiometer, joystick).</figcaption>
+    <figcaption>Materials used for Lab 4 (Arduino Uno, breadboard, jumper wires, LEDs, resistors, potentiometer, joystick).</figcaption>
   </figure>
-  <p>materials.jpg</p>
 
   <figure>
     <img src="workspace.jpg" alt="Workspace" width="400" height="400">
-    <figcaption>Figure 2: Workspace setup during wiring and testing.</figcaption>
+    <figcaption>Workspace setup during wiring and testing.</figcaption>
   </figure>
-  <p>workspace.jpg</p>
 
   <hr>
 
-  <h2>Math / Calculations</h2>
+  <h2>Calculations</h2>
   <h3>Potentiometer voltage conversion</h3>
   <p>
-    The Arduino ADC returns 0–1023 for 0–5V (assuming default 5V reference). I converted raw readings to voltage using:
+    The Arduino ADC returns 0-1023 for 0-5V. I converted readings to voltage using:
   </p>
   <pre><code>voltage = raw * 5.0 / 1023.0</code></pre>
 
@@ -91,7 +78,7 @@
   <pre><code>ledOn = map(potValue, 0, 1023, 0, 5)</code></pre>
 
   <p>
-    Example: If potValue is about 512, ledOn is about 2–3 LEDs depending on rounding.
+    Example: If potValue is about 512, ledOn is about 2-3 LEDs depending on rounding.
   </p>
 
   <hr>
@@ -109,23 +96,20 @@
   <h3>Progress Photos / Build Notes</h3>
   <figure>
     <img src="P1Layout.jpg" alt="Part 1 breadboard wiring / layout" width="400" height="400">
-    <figcaption>Figure 3: Part 1 breadboard layout — potentiometer wired to 5V, GND, and A0.</figcaption>
+    <figcaption>Part 1 breadboard layout potentiometer wired to 5V, GND, and A0.</figcaption>
   </figure>
-  <p>P1Layout.jpg</p>
 
   <h3>Circuit / Schematic</h3>
   <figure>
     <img src="Part1Fritz.png" alt="Part 1 schematic (Fritzing)" width="400" height="400">
-    <figcaption>Figure 4: Part 1 schematic (Fritzing) showing potentiometer connections to Arduino A0.</figcaption>
+    <figcaption>Part 1 schematic showing potentiometer connections to Arduino A0.</figcaption>
   </figure>
-  <p>Part1Fritz.png</p>
 
   <h3>Demo</h3>
   <figure>
     <video controls src="P1.MOV" width="400" height="400"></video>
-    <figcaption>Video 1: Part 1 demo — rotating the potentiometer changes the analogRead value (and calculated voltage) in Serial Monitor.</figcaption>
+    <figcaption>Part 1 demo rotating the potentiometer changes the analogRead value and voltage in Serial Monitor.</figcaption>
   </figure>
-  <p>P1.MOV</p>
 
   <h3>Code</h3>
   <pre><code>// analog pin where the potentiometer is connected
@@ -157,32 +141,29 @@ void loop() {
 
   <h3>Procedure</h3>
   <ol>
-    <li>Wired 5 LEDs each with a 220Ω resistor to digital pins 2–6.</li>
-    <li>Read the potentiometer value (0–1023) from A0.</li>
-    <li>Used map() to convert the potentiometer value into how many LEDs should be on (0–5).</li>
+    <li>Wired 5 LEDs each with a 220Ω resistor to digital pins 2-6.</li>
+    <li>Read the potentiometer value (0-1023) from A0.</li>
+    <li>Used map() to convert the potentiometer value into how many LEDs should be on (0-5).</li>
     <li>Turned on that many LEDs from the array so the “bar” grows/shrinks when the knob turns.</li>
   </ol>
 
   <h3>Progress Photos / Build Notes</h3>
   <figure>
     <img src="P2Layout.jpg" alt="Part 2 breadboard wiring / layout" width="400" height="400">
-    <figcaption>Figure 5: Part 2 breadboard layout — potentiometer input controls a 5-LED bar graph on pins 2–6.</figcaption>
+    <figcaption> Part 2 breadboard layout — potentiometer input controls a 5-LED bar graph on pins 2-6.</figcaption>
   </figure>
-  <p>P2Layout.jpg</p>
 
   <h3>Circuit / Schematic</h3>
   <figure>
     <img src="Par2Fritz.png" alt="Part 2 schematic (Fritzing)" width="400" height="400">
-    <figcaption>Figure 6: Part 2 schematic (Fritzing) showing five LEDs with resistors connected to pins 2–6 and the potentiometer to A0.</figcaption>
+    <figcaption>Part 2 schematic showing five LEDs with resistors connected to pins 2-6 and the potentiometer to A0.</figcaption>
   </figure>
-  <p>Par2Fritz.png</p>
 
   <h3>Demo</h3>
   <figure>
     <video controls src="P2.MOV" width="400" height="400"></video>
-    <figcaption>Video 2: Part 2 demo — turning the potentiometer increases/decreases how many LEDs are lit.</figcaption>
+    <figcaption>Part 2 demo turning the potentiometer increases/decreases how many LEDs are lit.</figcaption>
   </figure>
-  <p>P2.MOV</p>
 
   <h3>Code</h3>
   <pre><code>// LED pins (left to right)
@@ -218,7 +199,7 @@ void loop() {
 
   <hr>
 
-  <h2>Part 3 — Joystick Analog Read (X/Y) + Button</h2>
+  <h2>Part 3 — Joystick Analog Read (X/Y) and Button</h2>
 
   <h3>Procedure</h3>
   <ol>
@@ -228,19 +209,23 @@ void loop() {
     <li>Printed X, Y, and SW values to Serial Monitor.</li>
   </ol>
 
-  <h3>Progress Photos / Build Notes</h3>
+  <h3>Progress Photos and Build Notes</h3>
   <figure>
     <img src="P3Layout.jpg" alt="Part 3 joystick wiring / layout" width="400" height="400">
-    <figcaption>Figure 7: Part 3 layout — joystick wired with VRx→A0, VRy→A1, and SW→D2.</figcaption>
+    <figcaption>Part 3 layout  joystick wired with VRx=A0, VRy=A1, and SW=D2.</figcaption>
   </figure>
-  <p>P3Layout.jpg</p>
+
+  <h3>Circuit and Schematic</h3>
+  <figure>
+    <img src="Part3Fritz.png" alt="Part 3 schematic (Fritzing) - joystick to Arduino" width="500">
+    <figcaption>Part 3 schematic showing joystick VRx=A0, VRy=A1, SW=D2, plus 5V and GND.</figcaption>
+  </figure>
 
   <h3>Demo</h3>
   <figure>
     <video controls src="P3.MOV" width="400" height="400"></video>
-    <figcaption>Video 3: Part 3 demo — moving the joystick changes X/Y readings; pressing the stick changes SW.</figcaption>
+    <figcaption>Part 3 demo moving the joystick changes X/Y readings, pressing the stick changes SW.</figcaption>
   </figure>
-  <p>P3.MOV</p>
 
   <h3>Code</h3>
   <pre><code>// VRx
@@ -275,54 +260,251 @@ void loop() {
   delay(50);
 }</code></pre>
 
+  <h3>Findings</h3>
+  <ul>
+    <li><b>Average center values:</b> X ≈ 503, Y ≈ 505</li>
+    <li><b>All the way left/right/up/down:</b>
+      <ul>
+        <li>Left: X ≈ 503, Y ≈ 0</li>
+        <li>Right: X ≈ 503, Y ≈ 1023</li>
+        <li>Up: X ≈ 0, Y ≈ 505</li>
+        <li>Down: X ≈ 1023, Y ≈ 505</li>
+      </ul>
+    </li>
+    <li><b>Four diagonal extremes:</b>
+      <ul>
+        <li>Up-Right: X ≈ 1023, Y ≈ 1023</li>
+        <li>Up-Left: X ≈ 1023, Y ≈ 0</li>
+        <li>Down-Right: X ≈ 0, Y ≈ 1023</li>
+        <li>Down-Left: X ≈ 0, Y ≈ 0</li>
+      </ul>
+    </li>
+  </ul>
+
   <hr>
 
-  <h2>Part 4 — Plus-Layout LEDs Controlled by Joystick Direction</h2>
+  <h2>Part 4 — Plus Layout LEDs Controlled by Joystick Direction</h2>
 
-  <h3>Circuit / Layout Photo</h3>
+  <h3>Circuit and Layout Photo</h3>
   <figure>
-    <img src="P45Layout.jpg" alt="Part 4/5 layout photo" width="400" height="400">
-    <figcaption>Figure 8: Part 4/5 layout — five LEDs in a plus pattern used for directional control and the Whack-A-MoLED game.</figcaption>
+    <img src="P45Layout.jpg" alt="Part 4 layout photo" width="400" height="400">
+    <figcaption>Part 4 layout five LEDs in a plus pattern used for directional control.</figcaption>
   </figure>
-  <p>P45Layout.jpg</p>
+
+  <h3>Circuit and Schematic</h3>
+  <figure>
+    <img src="Part45Fritz.png" alt="Part 4 schematic showing joystick wiring and five LEDs in a plus pattern." width="650">
+    <figcaption>Part 4 schematic showing joystick wiring and five LEDs in a plus pattern.</figcaption>
+  </figure>
 
   <h3>Demo</h3>
   <figure>
     <video controls src="P4.MOV" width="400" height="400"></video>
-    <figcaption>Video 4: Part 4 demo — joystick direction turns on the matching LED in the plus layout.</figcaption>
+    <figcaption>Part 4 demo joystick direction turns on the matching LED in the plus layout, diagonals light two LEDs.</figcaption>
   </figure>
-  <p>P4.MOV</p>
 
   <h3>Code</h3>
-  <pre><code>// paste Part 4 code here</code></pre>
+  <pre><code>int LEDarray[] = {2, 3, 4, 5, 6}; 
+// index mapping:
+// 0 = top, 1 = right, 2 = center, 3 = left, 4 = bottom
+
+#define pin_JoyX A0
+#define pin_JoyY A1
+
+// thresholds
+const int highThresh = 900;
+const int lowThresh  = 100;
+const int midLow     = 350;
+const int midHigh    = 650;
+
+void setup() {
+  for (int i = 0; i &lt; 5; i++) {
+    pinMode(LEDarray[i], OUTPUT);
+  }
+}
+
+void loop() {
+  // turn off everything first
+  for (int i = 0; i &lt; 5; i++) {
+    digitalWrite(LEDarray[i], LOW);
+  }
+
+  // read joystick
+  int xVal = analogRead(pin_JoyX);
+  int yVal = analogRead(pin_JoyY);
+
+  // helpers
+  bool xMid = (xVal &gt; midLow &amp;&amp; xVal &lt; midHigh);
+  bool yMid = (yVal &gt; midLow &amp;&amp; yVal &lt; midHigh);
+
+  bool up    = (yVal &gt; highThresh);
+  bool down  = (yVal &lt; lowThresh);
+  bool right = (xVal &gt; highThresh);
+  bool left  = (xVal &lt; lowThresh);
+
+  // centered = only center LED
+  if (xMid &amp;&amp; yMid) {
+    digitalWrite(LEDarray[2], HIGH);
+  }
+  else {
+    // diagonals = two LEDs
+    if (up)    digitalWrite(LEDarray[0], HIGH);
+    if (right) digitalWrite(LEDarray[1], HIGH);
+    if (left)  digitalWrite(LEDarray[3], HIGH);
+    if (down)  digitalWrite(LEDarray[4], HIGH);
+  }
+
+  delay(10);
+}</code></pre>
 
   <hr>
 
   <h2>Part 5 — Whack-A-MoLED Game</h2>
 
-  <h3>Final Output / Demo</h3>
+  <h3>Circuit and Schematic</h3>
+  <p>
+    Same circuit as Part 4.
+  </p>
+
+  <h3>Final Output and Demo</h3>
   <figure>
     <video controls src="P5.MOV" width="400" height="400"></video>
-    <figcaption>Video 5: Final demo — Whack-A-MoLED game where the target LED changes and the joystick input is used to hit it. Final time is displayed at the end.</figcaption>
+    <figcaption>Demo Whack-A-MoLED game where the target LED changes and the joystick input is used to hit it. Final time is displayed at the end.</figcaption>
   </figure>
-  <p>P5.MOV</p>
 
   <h3>Final Output Image</h3>
   <figure>
     <img src="final_output.jpg" alt="Final output still image" width="400" height="400">
     <figcaption>Figure 9: Final output still image of the full system (joystick + plus-layout LEDs) running.</figcaption>
   </figure>
-  <p>final_output.jpg</p>
+
+  <h3>Design Process</h3>
+  <p>
+    I started by defining what counts as each joystick direction using thresholds and a deadzone so the center doesn't
+    accidentally trigger. Then I made the game loop run 20 rounds, each round picks a random direction LED, turns it on,
+    and waits in a while-loop until the joystick matches that direction. When the input matches, the LED turns off and the
+    next round starts. I timed the whole game using millis() by saving a start time before the rounds and subtracting it
+    from the end time after 20 hits.
+  </p>
 
   <h3>Code</h3>
-  <pre><code>// paste Part 5 code here</code></pre>
+  <pre><code>const byte LEDarray[] = {2, 6, 5, 3};  
+int middle = 4;
+
+#define pin_JoyX A0
+#define pin_JoyY A1
+
+// joystick threshold
+const int highThresh = 900;
+const int lowThresh  = 100;
+const int midLow     = 350;
+const int midHigh    = 650;
+
+unsigned long startTime;
+unsigned long endTime;
+unsigned long Time;
+
+void setup() {
+  // 4 direction LEDs as outputs
+  for (int i = 0; i &lt; 4; i++) {
+    pinMode(LEDarray[i], OUTPUT);
+  }
+
+  // center LED output
+  pinMode(middle, OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println("Get ready ... :");
+
+  // blink the center LED 2 times for .5 seconds
+  digitalWrite(middle, HIGH);
+  delay(500);
+  digitalWrite(middle, LOW);
+  delay(500);
+  digitalWrite(middle, HIGH);
+  delay(500);
+  digitalWrite(middle, LOW);
+  delay(500);
+
+  // wait 1 second before starting
+  delay(1000);
+
+  // start the timer
+  startTime = millis();
+
+  int ledChoice;
+  bool stickChoice = false;
+
+  // run the game 20 times
+  for (int roundNum = 0; roundNum &lt; 20; roundNum++) {
+    stickChoice = false;
+
+    // pick a random LED number
+    ledChoice = random(1, 5);
+
+    // turn that LED on
+    digitalWrite(LEDarray[ledChoice - 1], HIGH);
+
+    Serial.print("LED target (1-4) = ");
+    Serial.println(ledChoice);
+
+    // wait until the joystick values match target direction
+    while (stickChoice == false) {
+      int joyXValue = analogRead(pin_JoyX);
+      int joyYValue = analogRead(pin_JoyY);
+
+      // 1 up (Y high)
+      // 2 right (X high)
+      // 3 down(Y low)
+      // 4 left (X low)
+
+      if (ledChoice == 1 &amp;&amp; joyYValue &gt; highThresh &amp;&amp; (joyXValue &gt; midLow &amp;&amp; joyXValue &lt; midHigh)) {
+        stickChoice = true;
+      }
+      else if (ledChoice == 2 &amp;&amp; joyXValue &gt; highThresh &amp;&amp; (joyYValue &gt; midLow &amp;&amp; joyYValue &lt; midHigh)) {
+        stickChoice = true;
+      }
+      else if (ledChoice == 3 &amp;&amp; joyYValue &lt; lowThresh &amp;&amp; (joyXValue &gt; midLow &amp;&amp; joyXValue &lt; midHigh)) {
+        stickChoice = true;
+      }
+      else if (ledChoice == 4 &amp;&amp; joyXValue &lt; lowThresh &amp;&amp; (joyYValue &gt; midLow &amp;&amp; joyYValue &lt; midHigh)) {
+        stickChoice = true;
+      }
+      else {
+        stickChoice = false;
+      }
+
+      delay(10);
+    }
+
+    // once direction is hit turn off LEDs
+    for (int j = 0; j &lt; 4; j++) {
+      digitalWrite(LEDarray[j], LOW);
+    }
+
+    // delay so it does not jump to next round
+    delay(150);
+  }
+
+  // stop timer and print
+  endTime = millis();
+  Time = endTime - startTime;
+
+  Serial.print("Took you ");
+  Serial.println(Time);
+
+  delay(3000);
+}</code></pre>
 
   <hr>
 
-  <h2>Problems / Debugging Notes</h2>
+  <h2>Problems and Debugging Notes</h2>
   <ul>
     <li>Joystick readings were noisy near center, so I used a deadzone range.</li>
-    <li>Some LEDs were inconsistent until I re-checked the resistor values and ground connections.</li>
+    <li>Some LEDs were inconsistent until I re-checked the ground connections and digital pins.</li>
     <li>Direction detection was fixed by printing raw X/Y values and adjusting thresholds.</li>
   </ul>
 
@@ -340,11 +522,10 @@ void loop() {
 
   <hr>
 
-  <h2>Sources / References</h2>
+  <h2>Sources and References</h2>
   <ul>
     <li>Arduino reference for analogRead(): https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/</li>
     <li>Arduino reference for map(): https://www.arduino.cc/reference/en/language/functions/math/map/</li>
-    <li>(Add any tutorial/code you used, Fritzing parts source, etc.)</li>
   </ul>
 
   <hr>
@@ -352,7 +533,7 @@ void loop() {
   <h2>Conclusion</h2>
   <p>
     This lab showed how analog sensors produce a range of values and how to turn those readings into actions in code. The
-    potentiometer was a clear example of reading a variable voltage, while the joystick required thresholding and a deadzone to
+    potentiometer was a very clear example of reading a variable voltage, while the joystick required thresholding and a deadzone to
     reliably detect direction. Combining joystick input with a plus layout of LEDs made the mapping easy to understand, and the
     final game tied analog input, logic, and output together in a single project.
   </p>
