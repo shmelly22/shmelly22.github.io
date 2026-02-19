@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>  
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -41,6 +41,15 @@
     a deadzone are used to convert analog values into discrete directions and in Part 4, diagonal directions light two LEDs at once.
   </p>
 
+  <h2>System Diagram</h2>
+  <figure>
+    <img src="system_diagram.png" alt="System diagram of inputs, Arduino, and outputs" width="400" height="400">
+    <figcaption>System diagram potentiometer and joystick inputs to Arduino and LEDs as outputs with Serial Monitor feedback.</figcaption>
+  </figure>
+  <p>system_diagram.png</p>
+
+  <hr>
+
   <h2>Materials Used</h2>
   <ul>
     <li>Arduino Uno and USB cable</li>
@@ -54,13 +63,15 @@
   <h3>Photos</h3>
   <figure>
     <img src="materials.jpg" alt="Materials used" width="400" height="400">
-    <figcaption>Materials used for Lab 4 (Arduino Uno, breadboard, jumper wires, LEDs, resistors, potentiometer, joystick).</figcaption>
+    <figcaption>Figure 1: Materials used for Lab 4 (Arduino Uno, breadboard, jumper wires, LEDs, resistors, potentiometer, joystick).</figcaption>
   </figure>
+  <p>materials.jpg</p>
 
   <figure>
     <img src="workspace.jpg" alt="Workspace" width="400" height="400">
-    <figcaption>Workspace setup during wiring and testing.</figcaption>
+    <figcaption>Figure 2: Workspace setup during wiring and testing.</figcaption>
   </figure>
+  <p>workspace.jpg</p>
 
   <hr>
 
@@ -107,7 +118,7 @@
 
   <h3>Demo</h3>
   <figure>
-    <video controls src="P1.MOV" width="400" height="400"></video>
+    <video controls src="P1.MOV.mp4" width="400" height="400"></video>
     <figcaption>Part 1 demo rotating the potentiometer changes the analogRead value and voltage in Serial Monitor.</figcaption>
   </figure>
 
@@ -161,7 +172,7 @@ void loop() {
 
   <h3>Demo</h3>
   <figure>
-    <video controls src="P2.MOV" width="400" height="400"></video>
+    <video controls src="P2.MOV.mp4" width="400" height="400"></video>
     <figcaption>Part 2 demo turning the potentiometer increases/decreases how many LEDs are lit.</figcaption>
   </figure>
 
@@ -223,7 +234,7 @@ void loop() {
 
   <h3>Demo</h3>
   <figure>
-    <video controls src="P3.MOV" width="400" height="400"></video>
+    <video controls src="P3.MOV.mp4" width="400" height="400"></video>
     <figcaption>Part 3 demo moving the joystick changes X/Y readings, pressing the stick changes SW.</figcaption>
   </figure>
 
@@ -299,7 +310,7 @@ void loop() {
 
   <h3>Demo</h3>
   <figure>
-    <video controls src="P4.MOV" width="400" height="400"></video>
+    <video controls src="P4.MOV.mp4" width="400" height="400"></video>
     <figcaption>Part 4 demo joystick direction turns on the matching LED in the plus layout, diagonals light two LEDs.</figcaption>
   </figure>
 
@@ -368,7 +379,7 @@ void loop() {
 
   <h3>Final Output and Demo</h3>
   <figure>
-    <video controls src="P5.MOV" width="400" height="400"></video>
+    <video controls src="P5.mp4" width="400" height="400"></video>
     <figcaption>Demo Whack-A-MoLED game where the target LED changes and the joystick input is used to hit it. Final time is displayed at the end.</figcaption>
   </figure>
 
