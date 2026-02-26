@@ -16,12 +16,15 @@
   </p>
 
   <h2>Description</h2>
-  <p>
-    In this lab I practiced doing analog output using PWM and sound output using a piezo buzzer. First I wired an RGB LED
-    and used PWM to mix different colors. Then I used a joystick as analog input to dynamically change the RGB LED
-    color. After that I wired a passive buzzer and used tone() to play individual notes, then expanded that into a melody.
-    Finally, in the Extra Volt section I combined both light and sound into an audio-visualizer.
-  </p>
+    <p>
+    In this lab I practiced doing analog output using PWM and sound output using a piezo buzzer.
+    First I wired an RGB LED and used PWM to mix different colors.
+    Then I used a joystick as analog input to dynamically change the RGB LED color.
+    After that I wired a passive buzzer and used tone() to play individual notes,
+    then expanded that into two melodies.
+    Finally, in the Extra Volt section I combined both light and sound into a simple
+    audio-visualizer where specific notes trigger specific RGB colors.
+    </p>
 
   <h2>What it Does and How to Use It</h2>
   <ul>
@@ -580,6 +583,73 @@ void loop() {
   </ul>
 
   <hr>
+
+
+<hr>
+
+<h2>Extra Volt</h2>
+
+<h3>Procedure</h3>
+<ol>
+  <li>Kept the same buzzer wiring from Part 4 (pin 13 to GND).</li>
+  <li>Kept the RGB LED wiring from Part 1 (pins 11, 10, 9 through resistors to GND).</li>
+  <li>Combined the melody code with analogWrite() so each unique note turns on a specific color.</li>
+  <li>Star Wars melody plays first with color mapping.</li>
+  <li>Twinkle Twinkle plays second with its own color mapping.</li>
+  <li>It works by assigning a unique RGB color value to each note played.</li>
+</ol>
+
+<h3>Schematic</h3>
+<figure>
+  <img src="ExtraDiagram.png" alt="Extra Credit wiring diagram" width="400" height="400">
+  <figcaption>Extra Volt circuit diagram showing RGB LED and passive buzzer wired together.</figcaption>
+</figure>
+
+<h3>Picture</h3>
+<figure>
+  <img src="Extra.jpg" alt="Extra Credit build photo" width="400" height="400">
+  <figcaption>Extra Volt build photo - RGB LED and passive buzzer combined.</figcaption>
+</figure>
+
+<h3>Video Demo (Star Wars + RGB)</h3>
+<figure>
+  <video controls src="ExtraSW.MOV" width="400" height="400"></video>
+  <figcaption>Extra Volt demo 1: Star Wars melody with color changing RGB LED.</figcaption>
+</figure>
+
+<h3>Video Demo (Twinkle Twinkle + RGB)</h3>
+<figure>
+  <video controls src="ExtraTT.MOV" width="400" height="400"></video>
+  <figcaption>Extra Volt demo 2: Twinkle Twinkle melody with color changing RGB LED.</figcaption>
+</figure>
+
+<h3>How It Works</h3>
+<p>
+Each time a note plays using tone(), I set the RGB LED to a specific color using analogWrite().
+This creates a simple audio-visualizer effect where pitch corresponds to color.
+Longer notes stay illuminated longer because the delay() is longer.
+Since PWM is still being used for brightness control, the LED changes instantly when a new
+note plays.
+</p>
+
+<h3>Problems Faced and Notes</h3>
+<ul>
+  <li>The LED sometimes stayed the previous color if I forgot to explicitly set all three RGB channels before each note.</li>
+  <li>Keeping the structure identical to Part 4 made debugging much easier.</li>
+  <li>Assigning a unique color per note kept the logic simple and avoided overcomplicating the code.</li>
+</ul>
+
+<hr>
+
+<h2>Conclusion</h2>
+<p>
+In this lab, I learned how Arduino simulates analog output using PWM and how that can control LED brightness and color.
+I also learned how tone() works to generate sound frequencies and how note durations create rhythm.
+By combining RGB output with sound output in the Extra Volt section, I was able to create a simple audio-visualizer.
+This lab helped me better understand timing, mapping values, PWM control, and how multiple outputs can run together
+in one sketch without interfering with each other.
+</p>
+
 
   <h2>Sources and References</h2>
   <ul>
