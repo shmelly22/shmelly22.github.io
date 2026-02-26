@@ -1,0 +1,397 @@
+<!doctype html>   
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab 5 - Revenge of the Synth</title>
+</head>
+
+<body>
+  <h1>Lab 5 - “Revenge of the Synth”</h1>
+
+  <p>
+    Class: ATLS 3300<br>
+    Name: Sammy Muroff<br>
+    Date: 02/24/2026
+  </p>
+
+  <h2>Description</h2>
+  <p>
+    In this lab I practiced doing analog output using PWM and sound output using a piezo buzzer. First I wired an RGB LED
+    and used PWM to mix different colors. Then I used a joystick as analog input to dynamically change the RGB LED
+    color. After that I wired a passive buzzer and used tone() to play individual notes, then expanded that into a melody.
+    Finally, in the Extra Volt section I combined both light and sound into an audio-visualizer.
+  </p>
+
+  <h2>What it Does and How to Use It</h2>
+  <ul>
+    <li>Part 1: RGB LED displays different colors by changing PWM values on R/G/B pins.</li>
+    <li>Part 2: Joystick controls the RGB LED color directionally in real time.</li>
+    <li>Part 3: Passive buzzer plays a single note using tone().</li>
+    <li>Part 4: Passive buzzer plays a melody.</li>
+    <li>Extra Volt: RGB and buzzer make an audio-visualizer.</li>
+  </ul>
+
+  <h2>How it Works</h2>
+  <p>
+    The Arduino Uno does not output true analog voltage on its pins. Instead it uses Pulse Width Modulation on spesific pins.
+    PWM rapidly switches a pin between HIGH and LOW. By changing thow long it stays HIGH, the average power delivered changes.
+    LEDs respond to this as brightness, so analogWrite(0-255) makes the LED look dim to bright. An RGB LED is three LEDs
+    inside one package that share a common ground. By changing the brightness of each color channel with PWM, the colors mix
+    into many combinations like purple wich is red and blue. For sound, tone(pin, frequency) rapidly toggles a pin at a specific frequency,
+    which gets the buzzer to create a pitch. A melody is made by playing multiple tones for different durations.
+  </p>
+
+  <hr>
+
+  <h2>Materials Used</h2>
+  <ul>
+    <li>Arduino Uno</li>
+    <li>USB cable</li>
+    <li>Breadboard</li>
+    <li>Jumper wires</li>
+    <li>RGB LED</li>
+    <li>3 220Ω resistors</li>
+    <li>Joystick module</li>
+    <li>Passive buzzer</li>
+    <li>Multimeter</li>
+  </ul>
+
+  <hr>
+
+  <h2>Mathematical Calculations</h2>
+
+  <h3>PWM mapping (joystick to LED brightness)</h3>
+  <p>
+    analogRead() returns 0-1023 and analogWrite() uses 0-255. I mapped the joystick readings into PWM values like this:
+  </p>
+  <pre><code>pwm = map(raw, 0, 1023, 0, 255);</code></pre>
+
+  <h3>Frequency (tone) concept</h3>
+  <p>
+    tone(pin, frequency) uses the frequency in Hertz (Hz). Higher Hz = higher pitch. For example 260 Hz is a low-ish note.
+    In Part 4, a melody is created by changing the frequency over time and holding each frequency for a duration (ms).
+  </p>
+
+  <hr>
+
+  <h2>Part 1 — Wiring Up the RGB LED</h2>
+
+  <h3>Procedure</h3>
+  <ol>
+    <li>Placed the RGB LED on the breadboard and identified the longest leg, wich is ground.</li>
+    <li>Connected the long leg to GND.</li>
+    <li>Connected each R/G/B leg to a PWM-capable Arduino pin (Identified with a ~ next to the pin number) through a resistor.</li>
+    <li>Uploaded different sketchs that sets different PWM values on the R/G/B pins to produce different colors.</li>
+  </ol>
+
+  <h3>Schematic</h3>
+  <figure>
+    <img src="P1Diagram.png" alt="Part 1 RGB LED circuit diagram" width="400" height="400">
+    <figcaption>Part 1 circuit diagram showing RGB LED legs connected through resistors to PWM pins and common leg to GND.</figcaption>
+  </figure>
+
+  <h3>Pictures of Output</h3>
+  <figure>
+    <img src="P1Blue.jpg" alt="RGB LED showing blue" width="400" height="400">
+    <figcaption>RGB LED output - Blue.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="P1Green.jpg" alt="RGB LED showing green" width="400" height="400">
+    <figcaption>RGB LED output - Green.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="P1Purple.jpg" alt="RGB LED showing purple" width="400" height="400">
+    <figcaption>RGB LED output - Purple (red + blue mix).</figcaption>
+  </figure>
+
+  <figure>
+    <img src="P1Red.jpg" alt="RGB LED showing red" width="400" height="400">
+    <figcaption>RGB LED output - Red.</figcaption>
+  </figure>
+
+  <h3>Code</h3>
+  <pre><code>
+const int R_LED_PIN = 11;
+const int G_LED_PIN = 10;
+const int B_LED_PIN = 9;
+
+void setup() {
+    pinMode(R_LED_PIN, OUTPUT);
+    pinMode(G_LED_PIN, OUTPUT);
+    pinMode(B_LED_PIN, OUTPUT);
+}
+
+void loop() {
+    analogWrite(B_LED_PIN, 255);
+    analogWrite(R_LED_PIN, 255);
+}
+  </code></pre>
+
+  <h3>Problems and Notes</h3>
+  <ul>
+    <li>RGB LEDs are easy to wire wrong because the pins are not always in R-G-B order.</li>
+    <li>I identified the long leg (common ground) first to avoid wiring errors.</li>
+  </ul>
+
+  <hr>
+
+  <h2>Part 2 — Dynamic Color Changer with Joystick</h2>
+
+  <h3>Procedure</h3>
+  <ol>
+    <li>Kept the RGB LED wiring from Part 1.</li>
+    <li>Connected joystick 5V to 5V and GND to GND.</li>
+    <li>Connected joystick VRx to A0 and VRy to A1.</li>
+    <li>Read joystick values with analogRead() and mapped them to PWM (0-255).</li>
+    <li>Used joystick movement to control the RGB LED color channels.</li>
+    <li>Recorded a demo video showing the color changing as the joystick moves.</li>
+  </ol>
+
+  <h3>Schematic/h3>
+  <figure>
+    <img src="P2Diagram.png" alt="Part 2 joystick + RGB diagram" width="400" height="400">
+    <figcaption>Part 2 circuit diagram showing joystick analog outputs mapped into RGB LED PWM channels.</figcaption>
+  </figure>
+
+  <h3>Picture</h3>
+  <figure>
+    <img src="P2.jpg" alt="Part 2 breadboard photo" width="400" height="400">
+    <figcaption>Part 2 build photo - joystick + RGB LED wired to the Arduino.</figcaption>
+  </figure>
+
+  <h3>Video Demo</h3>
+  <figure>
+    <video controls src="P2.mp4" width="400" height="400"></video>
+    <figcaption>Part 2 demo video: joystick movement changes the RGB LED color.</figcaption>
+  </figure>
+
+  <h3>Code</h3>
+  <pre><code>
+const int X_pin = 0;  // VRx connected to A0
+const int Y_pin = 1;  // VRy connected to A1
+
+const int R_LED_PIN = 11;
+const int G_LED_PIN = 10;
+const int B_LED_PIN = 9;
+
+
+void setup() {
+  pinMode(R_LED_PIN, OUTPUT);
+  pinMode(G_LED_PIN, OUTPUT);
+  pinMode(B_LED_PIN, OUTPUT);
+}
+
+
+void loop() {
+  int x = 0;
+  int y = 0;
+  x = analogRead(X_pin);              //Read VRx normally
+  y = abs(1023-(analogRead(Y_pin)));  //Invert VRy read, as the module is inverted
+  
+  int redValue = 0;
+  int greenValue = 0;
+  int blueValue = 0;
+  int xValue = 0;     //xValue is later reffered to as "douse," as it's main role is to douse the red and and blue LEDs
+
+  xValue = (map(y, 512, 1023, 0, 255));             //Douse is the upper half of the Y axis
+  xValue = constrain (xValue, 0, 255);              //Set the upper half range to 0 thru 255
+  greenValue = (map(y, 0, 512, 0, 255));            //Set the green control to the lower half of the Y axis
+  redValue = (map(x, 0, 512, 0, 255))-xValue;       //Set the red control to the left half of the X axis, then subtract the "Douse" value
+  blueValue = (map(x, 512, 1023, 255, 0))-xValue;   //Set the blue control to the right half of the X axis, then subtract the "Douse" value
+
+  blueValue = constrain(blueValue, 0, 255);         //Make sure the range of power for each output is 0 to 255
+  redValue = constrain(redValue, 0, 255);
+  greenValue = constrain(greenValue, 0, 255);
+
+  analogWrite(R_LED_PIN, redValue);                       //Make the lights turn on.
+  analogWrite(G_LED_PIN, blueValue);                     
+  analogWrite(B_LED_PIN, greenValue);
+
+  Serial.print("X-axis: ");                         //I'm letting this still execute, but nothing will display
+  Serial.println((x));                              //until the Serial.begin(baud) is turned back on. 
+  Serial.print("Y-axis: ");
+  Serial.println((y));
+  Serial.print("Red=");
+  Serial.println(redValue);
+  Serial.print("Blue=");
+  Serial.println(blueValue);
+  Serial.print("Green=");
+  Serial.println(greenValue);
+  Serial.print("Douse=");                           //Remember, "DOUSE" is the xValue and it's role is to turn off red and blue LEDs
+  Serial.println(xValue);
+  Serial.print("\n");
+
+//  delay(500);                                     //Used in debugging so one can read the serial output. Keep off to keep LED control real-time
+}</code></pre>
+
+  <h3>Problems Faced and Notes</h3>
+    <ul>
+    <li>
+        The joystick Y-axis on my module was inverted, so pushing up decreased the value instead of increasing it.
+        I corrected this by using:
+        <pre><code>y = abs(1023 - analogRead(Y_pin));</code></pre>
+        This flipped the range so the physical motion matched the logical direction in code.
+    </li>
+
+    <li>
+        Getting smooth color blending was tricky because I divided the joystick axes into halves (0-512 and 512-1023).
+        If I didn't carefully map and constrain each section, negative values would occur after subtracting the
+        xValue. This caused flickering or unexpected color jumps.
+    </li>
+
+    <li>
+        The douse variable (xValue) was designed to reduce red and blue intensity when the joystick moves into
+        the upper Y range. Without constraining the values after subtraction, the LED could receive invalid
+        brightness levels. Using constrain() fixed this.
+    </li>
+
+    <li>
+        At first, colors looked incorrect because I accidentally swapped the analogWrite outputs.
+        I verified which PWM pin controlled which RGB leg and corrected the mapping:
+        <pre><code>
+    analogWrite(R_LED_PIN, redValue);
+    analogWrite(G_LED_PIN, blueValue);
+    analogWrite(B_LED_PIN, greenValue);
+        </code></pre>
+        Matching physical wiring to variable names was important.
+    </li>
+
+    <li>
+        The joystick center position does not sit exactly at 512. Small variations caused slight color shifts
+        even when the joystick was centered. Adding constrain() and carefully mapping ranges reduced
+        noticeable jitter.
+    </li>
+
+    <li>
+        Serial output was useful for debugging, but because Serial.begin() is currently commented out,
+        nothing prints unless it is re-enabled. During debugging, I temporarily added a delay() so I could
+        clearly read the values before removing it for real-time LED control.
+    </li>
+    </ul>
+
+  <hr>
+
+  <h2>Part 3 — Musical Notes with Passive Buzzer</h2>
+
+  <h3>Procedure</h3>
+  <ol>
+    <li>Wired the passive buzzer to a digital pin(13) and GND.</li>
+    <li>Uploaded a sketch that plays a single tone and beep at 1 second intervals.</li>
+    <li>Recorded a video where the buzzer is clearly audible.</li>
+  </ol>
+
+  <h3>Schematic</h3>
+  <figure>
+    <img src="P3+4Diagram.png" alt="Part 3 buzzer wiring diagram" width="400" height="400">
+    <figcaption>Part 3 circuit diagram showing passive buzzer wired to a digital pin and ground.</figcaption>
+  </figure>
+
+  <h3>Picture</h3>
+  <figure>
+    <img src="P3+4.jpg" alt="Part 3/4 build photo" width="400" height="400">
+    <figcaption>Part 3 build photo - passive buzzer wired to the Arduino on a breadboard.</figcaption>
+  </figure>
+
+  <h3>Video Demos</h3>
+  <figure>
+    <video controls src="P3A.MOV" width="400" height="400"></video>
+    <figcaption>Part 3 demo A: buzzer playing a note and beeping.</figcaption>
+  </figure>
+
+  <figure>
+    <video controls src="P3B.MOV" width="400" height="400"></video>
+    <figcaption>Part 3 demo B: buzzer playing a different frequency  pattern.</figcaption>
+  </figure>
+
+
+  <h3>Code PartA</h3>
+  <pre><code>
+const int BUZZER_PIN = 13;
+
+#define NOTE_A4 440 
+
+#define NOTE_C2 65
+
+
+
+void setup() {
+
+  pinMode(BUZZER_PIN, OUTPUT); 
+
+ }
+ 
+
+// This code will play continuous sound of frequency 260Hz (without stopping) 
+
+// NOTE THIS IS A DUMMY CODE (Make changes to make the buzzer beep at 1s intervals)
+
+
+
+void loop() { 
+
+  tone(BUZZER_PIN, NOTE_A4, 1000);
+
+  delay(1000); // Delay to make sure the beep plays for some time 
+
+  noTone(BUZZER_PIN); // Stops the tone already being played 
+
+  delay(1000); // Delay to make sure the beep plays for some time 
+
+}</code></pre>
+
+
+  <h3>Code PartB (including pitches.h)</h3>
+  <pre><code>
+#include "pitches.h"
+const int BUZZER_PIN = 13;
+
+
+void setup() {
+
+  pinMode(BUZZER_PIN, OUTPUT); 
+
+ }
+ 
+
+// This code will play continuous sound of frequency 260Hz (without stopping) 
+
+// NOTE THIS IS A DUMMY CODE (Make changes to make the buzzer beep at 1s intervals) 
+
+
+
+void loop() { 
+
+  tone(BUZZER_PIN, NOTE_DS6, 1000);
+
+  delay(1000); // Delay to make sure the beep plays for some time 
+
+  noTone(BUZZER_PIN); // Stops the tone already being played 
+
+  delay(1000); // Delay to make sure the beep plays for some time 
+}</code></pre>
+
+
+  <h3>Problems Faced and Notes</h3>
+  <ul>
+    <li>If the buzzer is silent, it is usually in the wrong pin, wrong buzzer type (active vs passive), or loose ground.</li>
+  </ul>
+
+  <hr>
+
+
+  <hr>
+
+  <h2>Sources and References</h2>
+  <ul>
+    <li>Arduino analogWrite() reference: https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/</li>
+    <li>Arduino tone() reference: https://www.arduino.cc/reference/en/language/functions/advanced-io/tone/</li>
+    <li>Arduino map() reference: https://www.arduino.cc/reference/en/language/functions/math/map/</li>
+  </ul>
+
+  <hr>
+
+</body>
+</html>
